@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="apReservasVendedor" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pruebaventana.ReservasVendedorController">
+   <children>
+      <BorderPane layoutX="126.0" layoutY="67.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Label text="Reservas" BorderPane.alignment="BOTTOM_CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </top>
+         <center>
+            <VBox prefHeight="365.0" prefWidth="385.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Lista de clientes">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="BOTTOM_RIGHT" prefHeight="26.0" prefWidth="390.0" spacing="10.0">
+                     <children>
+                        <TextField fx:id="tfBuscar" prefHeight="18.0" prefWidth="149.0" promptText="Usuario ó id reserva" />
+                        <Button fx:id="btnBuscar" mnemonicParsing="false" text="Buscar" />
+                     </children>
+                  </HBox>
+                  <ListView fx:id="lvReservas" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="20.0" right="10.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+         <right>
+            <VBox prefHeight="365.0" prefWidth="222.0" spacing="10.0" BorderPane.alignment="TOP_CENTER">
+               <children>
+                  <Label text="Cliente">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="267.0" prefWidth="222.0" spacing="10.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                           <children>
+                              <Label prefHeight="25.0" prefWidth="119.0" text="Id Reserva:" />
+                              <Label prefHeight="25.0" prefWidth="119.0" text="Producto:" />
+                              <Label prefHeight="25.0" prefWidth="119.0" text="Cantidad:" />
+                              <Label prefHeight="25.0" prefWidth="119.0" text="Fecha reserva:" />
+                              <Label prefHeight="25.0" prefWidth="119.0" text="Descripción:">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label prefHeight="25.0" prefWidth="119.0" text="Estado:">
+                                 <VBox.margin>
+                                    <Insets top="78.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="284.0" prefWidth="150.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="lblIdReserva" prefHeight="25.0" prefWidth="131.0" text="id reserva" />
+                              <Label fx:id="lblProducto" prefHeight="25.0" prefWidth="131.0" text="producto" />
+                              <Label fx:id="lblCantidad" prefHeight="25.0" prefWidth="131.0" text="cantidad" />
+                              <DatePicker fx:id="dpFechaReserva" prefHeight="25.0" prefWidth="131.0" />
+                              <TextArea fx:id="taDescripcion" prefWidth="131.0" />
+                              <ChoiceBox fx:id="cbEstado" prefHeight="25.0" prefWidth="131.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </ChoiceBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="35.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="222.0" spacing="5.0">
+                     <children>
+                        <Button fx:id="btnModificar" mnemonicParsing="false" text="Modificar" />
+                        <Button fx:id="btnGuardar" mnemonicParsing="false" text="Guardar" />
+                     </children>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </right>
+         <bottom>
+            <Button fx:id="btnVolver" mnemonicParsing="false" text="Volver" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+            </Button>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
