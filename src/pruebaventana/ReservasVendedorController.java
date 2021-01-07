@@ -14,6 +14,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -32,25 +34,27 @@ public class ReservasVendedorController implements Initializable {
     @FXML
     private Button btnBuscar;
     @FXML
-    private ListView<?> lvReservas;
-    @FXML
-    private Label lblIdReserva;
-    @FXML
-    private Label lblProducto;
-    @FXML
-    private Label lblCantidad;
-    @FXML
-    private DatePicker dpFechaReserva;
-    @FXML
-    private TextArea taDescripcion;
-    @FXML
-    private ChoiceBox<?> cbEstado;
-    @FXML
-    private Button btnModificar;
-    @FXML
-    private Button btnGuardar;
-    @FXML
     private AnchorPane apReservasVendedor;
+    @FXML
+    private TableView<?> tvReservas;
+    @FXML
+    private TableColumn<?, ?> tcIdReserva;
+    @FXML
+    private TableColumn<?, ?> tcUsuario;
+    @FXML
+    private TableColumn<?, ?> tcProducto;
+    @FXML
+    private TableColumn<?, ?> tcCantidad;
+    @FXML
+    private TableColumn<?, ?> tcDescripcion;
+    @FXML
+    private TableColumn<?, ?> tcFecha;
+    @FXML
+    private TableColumn<?, ?> tcRealizada;
+    @FXML
+    private TableColumn<?, ?> tcEntrega;
+    @FXML
+    private TableColumn<?, ?> tcEstado;
 
     /**
      * Initializes the controller class.
