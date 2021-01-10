@@ -13,12 +13,14 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -26,21 +28,23 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javax.imageio.ImageIO;
+import modelo.BirthdayEvent;
+import modelo.DatePickerCell;
 import modelo.EstadoReserva;
 import modelo.Producto;
 import modelo.Reserva;
+import modelo.ReservaT;
 
 /**
  * FXML Controller class
  *
  * @author Fredy
  */
-public class ReservasVendedorController implements Initializable {
+public class ReservasVendedorController1 implements Initializable {
 
     @FXML
     private Button btnVolver;
@@ -53,24 +57,24 @@ public class ReservasVendedorController implements Initializable {
     @FXML
     private TableView<Reserva> tvReservas;
     @FXML
-    private TableColumn<Reserva,Long> tcIdReserva;
+    private TableColumn<?, ?> tcIdReserva;
     @FXML
-    private TableColumn <Reserva,Long>tcUsuario;
+    private TableColumn<?, ?> tcUsuario;
     @FXML
-    private TableColumn<Producto,Long> tcProducto;
+    private TableColumn<?, ?> tcProducto;
     @FXML
-    private TableColumn<Reserva,Integer> tcCantidad;
+    private TableColumn<?, ?> tcCantidad;
     @FXML
-    private TableColumn<Reserva,String> tcDescripcion;
+    private TableColumn<?, ?> tcDescripcion;
     @FXML
-    private TableColumn<Reserva,Timestamp>tcFecha;
+    private TableColumn<?, ?> tcFecha;
     @FXML
-    private TableColumn <Reserva,Timestamp>tcRealizada;
+    private TableColumn<?, ?> tcRealizada;
     @FXML
-    private TableColumn<Reserva,Timestamp> tcEntrega;
+    private TableColumn<?, ?> tcEntrega;
     //  private TableColumn<BirthdayEvent, Timestamp> tcEntrega;
     @FXML
-    private TableColumn <EstadoReserva,EstadoReserva>tcEstado;
+    private TableColumn<?, ?> tcEstado;
     private List<Reserva> reservas;
 
     private List<Reserva> getReservas() throws IOException {
@@ -118,27 +122,26 @@ public class ReservasVendedorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-        //     reservas.addAll(getReservas());
+             reservas.addAll(getReservas());
             tvReservas.setEditable(true);
-            reservas = FXCollections.observableArrayList(getReservas());
+           // reservas = FXCollections.observableArrayList(getReservas());
             tcIdReserva.setCellValueFactory(new PropertyValueFactory<>("id"));
             tcUsuario.setCellValueFactory(new PropertyValueFactory<>("user"));
-            tcProducto.setCellValueFactory(new PropertyValueFactory<>("id"));
+            tcProducto.setCellValueFactory(new PropertyValueFactory<>("producto"));
            
             tcCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
             tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-            tcDescripcion.setCellFactory(TextFieldTableCell.forTableColumn());
-            tcDescripcion.setOnEditCommit(valor ->{
-                System.out.println("Nuevo : " +  valor.getNewValue());
-                System.out.println("Anterior : " + valor.getOldValue());
-                Reserva reserva =valor.getRowValue();
-                reserva.setDescripcion(valor.getNewValue());    
-            });
+          /*   tcDescripcion.setCellFactory(TextFieldTableCell.forTableColumn());
+            tcDescripcion.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Reserva, String> event) {
+            Reserva reserva = event.getRowValue();
+            reserva.setDescripcion(event.getNewValue());
+            }
+            });*/
             tcRealizada.setCellValueFactory(new PropertyValueFactory<>("fechaReserva"));
             tcEntrega.setCellValueFactory(new PropertyValueFactory<>("fechaEntrega"));
             tcEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
-            tcEstado.setCellFactory(ChoiceBoxTableCell.
-                    forTableColumn(EstadoReserva.CANCELADA,EstadoReserva.CONFIRMADA,EstadoReserva.EXPIRADA,EstadoReserva.REALIZADA));
             //     tcEstado.setCellValueFactory(new PropertyValueFactory<ChoiceBox<EstadoReserva>, EstadoReserva>("estado"));
             tvReservas.getSelectionModel().selectedItemProperty().addListener(this::handleReservaTableSelectionChanged);
             tvReservas.setItems((ObservableList<Reserva>) reservas);
@@ -146,7 +149,7 @@ public class ReservasVendedorController implements Initializable {
             tvReservas.getItems().add(r);
             });*/
         } catch (IOException ex) {
-            Logger.getLogger(ReservasVendedorController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReservasVendedorController1.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

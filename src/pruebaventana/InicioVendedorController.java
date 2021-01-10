@@ -95,7 +95,7 @@ public class InicioVendedorController implements Initializable {
         // abrimos la imagen
         File imgPath = new File(path);
         ByteArrayOutputStream baos = new ByteArrayOutputStream(1000);
-        BufferedImage img = ImageIO.read(new File(path, "z.jpg"));
+        BufferedImage img = ImageIO.read(new File(path, "nik.jpg"));
         ImageIO.write(img, "jpg", baos);
         baos.flush();
         //   String base64String = Base64.encode(baos.toByteArray());

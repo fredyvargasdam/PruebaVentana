@@ -20,7 +20,7 @@ public class FlyshoesFXMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("InicioVendedor.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ReservasVendedor.fxml"));
         primaryStage.setTitle("Flyshoes");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
