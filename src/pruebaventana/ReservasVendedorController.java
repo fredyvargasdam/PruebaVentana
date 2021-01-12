@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -30,8 +33,10 @@ import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import javax.imageio.ImageIO;
 import modelo.EstadoReserva;
+import modelo.FechaEntregaCell;
 import modelo.Producto;
 import modelo.Reserva;
 
@@ -53,24 +58,24 @@ public class ReservasVendedorController implements Initializable {
     @FXML
     private TableView<Reserva> tvReservas;
     @FXML
-    private TableColumn<Reserva,Long> tcIdReserva;
+    private TableColumn<Reserva, Long> tcIdReserva;
     @FXML
-    private TableColumn <Reserva,Long>tcUsuario;
+    private TableColumn<Reserva, Long> tcUsuario;
     @FXML
-    private TableColumn<Producto,Long> tcProducto;
+    private TableColumn<Reserva, Long> tcProducto;
     @FXML
-    private TableColumn<Reserva,Integer> tcCantidad;
+    private TableColumn<Reserva, Integer> tcCantidad;
     @FXML
-    private TableColumn<Reserva,String> tcDescripcion;
+    private TableColumn<Reserva, String> tcDescripcion;
     @FXML
-    private TableColumn<Reserva,Timestamp>tcFecha;
+    private TableColumn<Reserva, Timestamp> tcFecha;
     @FXML
-    private TableColumn <Reserva,Timestamp>tcRealizada;
+    private TableColumn<Reserva, Timestamp> tcRealizada;
     @FXML
-    private TableColumn<Reserva,Timestamp> tcEntrega;
+    private TableColumn<Reserva, Timestamp> tcEntrega;
     //  private TableColumn<BirthdayEvent, Timestamp> tcEntrega;
     @FXML
-    private TableColumn <EstadoReserva,EstadoReserva>tcEstado;
+    private TableColumn<EstadoReserva, EstadoReserva> tcEstado;
     private List<Reserva> reservas;
 
     private List<Reserva> getReservas() throws IOException {
@@ -79,6 +84,7 @@ public class ReservasVendedorController implements Initializable {
         Producto producto;
         for (int i = 0; i < 20; i++) {
             producto = new Producto();
+            producto.setId(Long.valueOf(1));
             producto.setPrecio(179.99f);
             producto.setModelo("Nike Air Max 97");
             producto.setImagen(extractBytes("E:\\reto2\\PruebaVentana\\src\\pruebaventana\\"));
@@ -118,29 +124,44 @@ public class ReservasVendedorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-        //     reservas.addAll(getReservas());
+            //     reservas.addAll(getReservas());
             tvReservas.setEditable(true);
             reservas = FXCollections.observableArrayList(getReservas());
             tcIdReserva.setCellValueFactory(new PropertyValueFactory<>("id"));
             tcUsuario.setCellValueFactory(new PropertyValueFactory<>("user"));
-            tcProducto.setCellValueFactory(new PropertyValueFactory<>("id"));
-           
+            tcProducto.setCellValueFactory((TableColumn.CellDataFeatures<Reserva, Long> param) -> new SimpleObjectProperty<>(param.getValue().getProducto().getId()));
             tcCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
             tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
             tcDescripcion.setCellFactory(TextFieldTableCell.forTableColumn());
-            tcDescripcion.setOnEditCommit(valor ->{
-                System.out.println("Nuevo : " +  valor.getNewValue());
+            tcDescripcion.setOnEditCommit(valor -> {
+                System.out.println("Nuevo : " + valor.getNewValue());
                 System.out.println("Anterior : " + valor.getOldValue());
-                Reserva reserva =valor.getRowValue();
-                reserva.setDescripcion(valor.getNewValue());    
+                Reserva reserva = valor.getRowValue();
+                System.out.println("id de reserva " + reserva.getId());
+                reserva.setDescripcion(valor.getNewValue());
             });
             tcRealizada.setCellValueFactory(new PropertyValueFactory<>("fechaReserva"));
             tcEntrega.setCellValueFactory(new PropertyValueFactory<>("fechaEntrega"));
+            tcEntrega.setCellFactory(new Callback<TableColumn<Reserva, Timestamp>, TableCell<Reserva, Timestamp>>() {
+                @Override
+                public TableCell<Reserva, Timestamp> call(TableColumn<Reserva, Timestamp> arg0) {      
+                    return new FechaEntregaCell();
+                }
+            });
+            tcEntrega.setOnEditCommit(value->{
+                 System.out.println("Nuevo : " + value.getNewValue());
+                System.out.println("Anterior : " + value.getOldValue());
+                Reserva reserva = value.getRowValue();
+                System.out.println("id de reserva " + reserva.getId());
+                reserva.setFechaEntrega(value.getNewValue());
+            });
+
             tcEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
             tcEstado.setCellFactory(ChoiceBoxTableCell.
-                    forTableColumn(EstadoReserva.CANCELADA,EstadoReserva.CONFIRMADA,EstadoReserva.EXPIRADA,EstadoReserva.REALIZADA));
-            //     tcEstado.setCellValueFactory(new PropertyValueFactory<ChoiceBox<EstadoReserva>, EstadoReserva>("estado"));
-            tvReservas.getSelectionModel().selectedItemProperty().addListener(this::handleReservaTableSelectionChanged);
+                    forTableColumn(EstadoReserva.CANCELADA, EstadoReserva.CONFIRMADA, EstadoReserva.EXPIRADA, EstadoReserva.REALIZADA));
+            tcEstado.addEventHandler(TableColumn.<Reserva, EstadoReserva>editCommitEvent(),
+                    event -> actualizarReservaEstado(event));
+           // tvReservas.getSelectionModel().selectedItemProperty().addListener(this::handleReservaTableSelectionChanged);
             tvReservas.setItems((ObservableList<Reserva>) reservas);
             /*  reservas.forEach((r) -> {
             tvReservas.getItems().add(r);
@@ -151,8 +172,18 @@ public class ReservasVendedorController implements Initializable {
 
     }
 
-    private void handleReservaTableSelectionChanged(ObservableValue observable, Object oldValue, Object newValue) {
+    
 
+    private void actualizarReservaEstado(TableColumn.CellEditEvent<Reserva, EstadoReserva> event) {
+        System.out.println("Estoy aca la reserva es " + event);
+        System.out.println((EstadoReserva) event.getNewValue());
+        System.out.println((EstadoReserva) event.getOldValue());
+        Reserva reserva = event.getRowValue();
+        EstadoReserva estado = event.getNewValue();
+        System.out.println("Estado: " + estado.toString() + reserva.getId() + reserva.getDescripcion() + "Esto es de reserva: " + reserva.getEstado().toString());
+        reserva.setEstado(event.getNewValue());
+        System.out.println(reserva.getId() + reserva.getDescripcion() + "Esto es de reserva: " + reserva.getEstado().toString()+" fecha de entrega es "+reserva.getFechaEntrega());
+        
     }
 
 }
